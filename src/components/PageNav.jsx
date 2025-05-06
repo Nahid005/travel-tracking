@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router'
-import styles from './AppNav.module.css'
+import styles from './PageNav.module.css'
 import Logo from './Logo'
 
-function AppNav() {
+function PageNav() {
   return (
     <nav className={styles.nav}>
       <Logo/>
@@ -21,4 +21,4 @@ function AppNav() {
   )
 }
 
-export default AppNav
+export default PageNav
