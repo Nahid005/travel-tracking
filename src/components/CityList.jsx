@@ -6,7 +6,7 @@ import Spinner from './Spinner'
 function CityList({ cities, isError, isLoading }) {
   if (isLoading) return <Spinner />
   if (isError) return <Error message={ isError } />
-  return <ul className={styles.CityList}>
+  return <ul className={styles.cityList}>
     {
         cities.map(city => <CityItem key={ city.id } city={ city } />)
     }
