@@ -1,9 +1,11 @@
+import { useCities } from '../context/CitiesContext'
 import CityItem from './CityItem'
 import styles from './CityList.module.css'
 import Error from './Error'
 import Spinner from './Spinner'
 
-function CityList({ cities, isError, isLoading }) {
+function CityList() {
+  const { isLoading, isError, cities } = useCities()
   if (isLoading) return <Spinner />
   if (isError) return <Error message={ isError } />
   return <ul className={styles.cityList}>

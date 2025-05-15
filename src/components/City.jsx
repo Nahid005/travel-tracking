@@ -1,5 +1,10 @@
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import styles from './City.module.css'
+import { useCities } from '../context/CitiesContext'
+import { useEffect } from 'react'
+import Spinner from './Spinner'
+import Error from './Error'
+import Button from './Button'
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat('en', {
@@ -10,17 +15,18 @@ const formatDate = (date) =>
   }).format(new Date(date))
 
 function City() {
-  const id = useParams()
-  console.log(id)
-  // TEMP DATA
-  const currentCity = {
-    cityName: 'Lisbon',
-    emoji: '🇵🇹',
-    date: '2027-10-31T15:59:59.138Z',
-    notes: 'My favorite city so far!'
-  }
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const { currentCity, getCity, isLoading, isError } = useCities()
+
+  useEffect(() => {
+    getCity(id)
+  }, [id])
 
   const { cityName, emoji, date, notes } = currentCity
+
+  if (!isLoading) <Spinner />
+  if (!isError) <Error message={'Data Not found'} />
 
   return (
     <div className={styles.city}>
@@ -53,9 +59,8 @@ function City() {
           Check out {cityName} on Wikipedia &rarr;
         </a>
       </div>
-
       <div>
-        {/* <ButtonBack /> */}
+        <Button onClick={() => navigate(-1)} type={'back'}> Back </Button>
       </div>
     </div>
   )

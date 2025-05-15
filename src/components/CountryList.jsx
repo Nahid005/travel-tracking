@@ -1,9 +1,11 @@
+import { useCities } from '../context/CitiesContext'
 import CountryItem from './CountryItem'
 import styles from './CountryList.module.css'
 import Error from './Error'
 import Spinner from './Spinner'
 
-function CountryList ({ cities, isError, isLoading }) {
+function CountryList () {
+  const { isLoading, isError, cities } = useCities()
   if (isLoading) <Spinner />
   if (isError) <Error message={isError} />
 
