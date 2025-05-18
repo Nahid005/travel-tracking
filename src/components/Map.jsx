@@ -23,7 +23,7 @@ function Map() {
 
   return <div className={styles.mapContainer}>
     <Button type='position' onClick={() => getPosition()}>{isLoading ? 'Loading...' : 'Use your position' }</Button>
-    <MapContainer className={styles.map} center={mapPosition} zoom={13} scrollWheelZoom={true}>
+    <MapContainer className={styles.map} center={mapPosition} zoom={6} scrollWheelZoom={true}>
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"

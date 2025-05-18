@@ -6,6 +6,9 @@ import Spinner from './Spinner'
 
 function CityList() {
   const { isLoading, isError, cities } = useCities()
+
+  console.log(cities)
+
   if (isLoading) return <Spinner />
   if (isError) return <Error message={ isError } />
   return <ul className={styles.cityList}>

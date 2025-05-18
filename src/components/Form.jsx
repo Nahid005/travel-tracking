@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router'
 import useUrlPosition from '../hooks/useUrlPosition'
 import Spinner from './Spinner'
 import Error from './Error'
+import { useCities } from '../context/CitiesContext'
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -26,6 +27,8 @@ function Form() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(null)
+  const { createCity } = useCities()
+  const [emoji, setEmoji] = useState()
 
   const baseURL = 'https://api.bigdatacloud.net/data/reverse-geocode-client'
 
@@ -38,8 +41,9 @@ function Form() {
         const data = await response.json()
         setCityName(data.city || data.locality)
         setCountry(data.countryName)
+        setEmoji(convertToEmoji(data.countryCode))
       } catch (error) {
-        setIsError(error)
+        setIsError(error.message)
       } finally {
         setIsLoading(false)
       }
@@ -48,7 +52,7 @@ function Form() {
     getCity()
   }, [lat, lng])
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
 
     const newCity = {
@@ -56,17 +60,20 @@ function Form() {
       country,
       date,
       notes,
+      emoji,
       position: { lat, lng }
     }
 
-    console.log(newCity)
+    await createCity(newCity)
+
+    navigate('/app/cities')
   }
 
   if (!isLoading) <Spinner />
   if (!isError) <Error message={isError} />
 
   return (
-    <form className={styles.form} onClick={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
@@ -74,7 +81,7 @@ function Form() {
           onChange={(e) => setCityName(e.target.value)}
           value={cityName}
         />
-        {/* <span className={styles.flag}>{emoji}</span> */}
+        <span className={styles.flag}>{emoji}</span>
       </div>
 
       <div className={styles.row}>
